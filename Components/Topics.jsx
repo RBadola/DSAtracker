@@ -1,15 +1,30 @@
 
-import { FlatList,ScrollView, View } from 'react-native'
+import { FlatList, ScrollView, Text, View } from 'react-native'
 import TopicCard from './TopicCard'
+import { useContext } from 'react'
+import { DataStructure } from './Context'
+import { useEffect, useState, useRef } from 'react';
+import { useIsFocused } from '@react-navigation/native';
+
 
 const Topics = ({ route, navigation }) => {
-    const {DATA} = route.params
-    
+
+    const isFocus = useIsFocused()
+    const { DATALOVE } = useContext(DataStructure)
+
+
+    useEffect(() => {
+        if (isFocus) {
+           
+        }
+    }, []);
+
+
     return (
         <View>
             <ScrollView>
                 {
-                    DATA.map((item,i)=><TopicCard key={i} heading={item.topic} by={item.By} data={item.Ques} img={item.img}  nav={navigation}/>)
+                    DATALOVE.map((item, i) => <TopicCard key={i} heading={item.topic} data={item.Ques} img={item.img} nav={navigation} />)
                 }
             </ScrollView>
         </View>

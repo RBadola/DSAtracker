@@ -1,31 +1,36 @@
 import { Button, Image, Pressable, StyleSheet, Text, View } from 'react-native'
-import Icon from 'react-native-vector-icons/FontAwesome';
+import Icon from 'react-native-vector-icons/AntDesign';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useContext, useEffect, useState } from 'react'
-import { DataStructure } from './Context'
 import { useIsFocused } from '@react-navigation/native';
-const TopicCard = ({ heading,  nav, data, img,by }) => {
+import { useEffect, useState } from 'react';
+const TopicCard = ({ heading, nav,  data, img }) => {
     const isFocus = useIsFocused()
-    const [status,setTopicstatus] = useState("")
-    const {storeData} = useContext(DataStructure)
+    const [status,setTopicstatus] = useState("Not Yet Started")
+    const [attempted,setAttempted] = useState(0)
+    const [percent,setPercent]=useState(0)
 	const getData = async () => {
         try {
-            const value = await AsyncStorage.getItem(by+heading)
-			if(value){
-                let v= value.replace(" ",",") 
-                let[b,t] = v.split(",")
-                if(b == by && t == heading){
-                    setTopicstatus("Started")
-                }
-                console.log(value);
-			}else{
-				setTopicstatus("Not Yet Started")
-			}
+            const value =  await AsyncStorage.getItem(heading+"Attempt")
+            let n = Number(value)
+            setAttempted(n)
+            calpercent(n)
+            if(n > 0){
+                setTopicstatus("Started")
+            }
+            if(n===data.length){
+                setTopicstatus("Finished")
+            }
+            if(n===0){
+                setTopicstatus("Not Yet Started")
+            }
         } catch (e) {
             console.log(e);
         }
     };
-	
+	const calpercent =(a)=>{
+        const c = Math.round(((a)/data.length)*100) 
+        setPercent(c)
+    }
     const clearData = async() =>await AsyncStorage.clear();
 
 	useEffect(()=>{		
@@ -42,13 +47,13 @@ const TopicCard = ({ heading,  nav, data, img,by }) => {
                 <View style={styles.question}>
                     <Text>Total Questions : </Text><Text style={{ fontWeight: '600', fontSize: 18, textAlign: 'center', color: "orange" }}>{data.length}</Text>
                 </View>
-                <Text style={{ color: "green", marginVertical: 3 }}>{data.length} more to go </Text>
+                <Text style={{ color: "green", marginVertical: 3 }}>{data.length-attempted} more to go </Text>
                 <View>
                     <View style={{ flexDirection: "row", justifyContent: "space-between", fontSize: 12 }}>
                         <Text style={[styles.badge,{color:status === "Not Yet Started" ?"red":"#00FFC5",backgroundColor:status === "Not Yet Started" ?"#ff9999":"green"},]} >{status}</Text>
-                        <Text style={{ color: "red" }} >10%</Text>
+                        <Text style={{ color: "red" }} >{percent}%</Text>
                     </View>
-                    <View style={styles.progressBar}><View style={styles.progress}></View></View>
+                    <View style={styles.progressBar}><View style={{width:`${percent}%`,height: 10,backgroundColor:status ==="Finished"? "green":"red",borderRadius: 2,}}></View></View>
                 </View>
                 <Pressable onPress={() => {
 
@@ -60,7 +65,7 @@ const TopicCard = ({ heading,  nav, data, img,by }) => {
                 }}
                     style={styles.button}
                 >
-                    <Icon name="arrow-right" size={20} color="black" />
+                    <Icon name="arrowright" size={20} color="black" />
                 </Pressable>
 
 
@@ -83,7 +88,8 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         alignSelf: "center",
         margin: 3,
-        flex: 1
+        flex: 1,
+        
     },
     profilePicture: {
         margin: 4,
@@ -115,24 +121,22 @@ const styles = StyleSheet.create({
         height: 10,
         backgroundColor: "#ff9999",
         marginVertical: 2,
-        borderRadius: 12
+        borderRadius: 2
     },
     progress: {
-        width: "10%",
-        height: 10,
-        backgroundColor: "red",
-        borderRadius: 12,
+        
 
     },
     button: {
         alignItems: "center",
         justifyContent:"center",
-        paddingVertical: 2,
+        paddingVertical: 1,
         borderWidth: 2,
-        width: 60,
+        width: 50,
         height:40,
         alignSelf: "flex-end",
-        borderRadius: 6
+        borderRadius: 6,
+        marginTop:2
     }
 
 })
