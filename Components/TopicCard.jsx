@@ -61,6 +61,8 @@ const TopicCard = ({ heading, nav,  data, img }) => {
                         Data: data,
                         name: heading,
                         bg: "Green",
+                        total:data.length,
+                        done:attempted
                     });
                 }}
                     style={styles.button}

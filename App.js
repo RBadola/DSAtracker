@@ -1,14 +1,14 @@
-
-import {  StyleSheet } from 'react-native';
 import Card from './Components/Card';
-import { NavigationContainer } from '@react-navigation/native';
+import { NavigationContainer} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import Topics from './Components/Topics';
 import DataStates from './Components/Context';
 import { StatusBar } from 'expo-status-bar';
 
+
 export default function App() {
- 
+
+
   const Stack = createNativeStackNavigator();
   return (
     <NavigationContainer>
@@ -40,11 +40,3 @@ export default function App() {
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: '#fff',
-    marginTop: 50
-  },
-});

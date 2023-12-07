@@ -4,7 +4,7 @@ import { View } from 'react-native';
 import Row from './Row';
 
 const Card = ({ route, navigation }) => {
-    const { Data } = route.params;
+    const { Data} = route.params;
     return (
         <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center', paddingVertical: 2 }}>
             <View style={{ height: "auto", padding: 2 }}>
@@ -15,8 +15,7 @@ const Card = ({ route, navigation }) => {
                 <ScrollView>
                     {Data.map((item,i)=><Row item={item} key={i} />)}
                 </ScrollView>
-                
-                </View>
+            </View>
         </View>
     )
 }

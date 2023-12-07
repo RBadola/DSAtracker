@@ -3,19 +3,24 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import {  Linking, Pressable, StyleSheet, Text, Vibration, View ,} from 'react-native'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useIsFocused } from '@react-navigation/native';
+import * as WebBrowser from 'expo-web-browser';
 const Row = ({ item }) => {
     const [toggleCheckBox, setToggleCheckBox] = useState(false)
     const isFocus = useIsFocused()
     const ONE_SECOND_IN_MS = 10;
+    const _handlePressButtonAsync = async (urll) => {
+        Vibration.vibrate(4 * ONE_SECOND_IN_MS)
+        await WebBrowser.openBrowserAsync(urll);
+      };
     const showToast = () => {
        
-      };
+    };
     const ToggleFunction =async () => {
         
         Vibration.vibrate(1 * ONE_SECOND_IN_MS)
         try {
             if(!toggleCheckBox){ 
-                showToast()
+                // showToast()
                 setToggleCheckBox(true)
                 const jsonValue = JSON.stringify(true);
                 incAttempt()
@@ -57,10 +62,7 @@ const Row = ({ item }) => {
 
         }
       };
-      const urlOpener=(u)=>{
-        Vibration.vibrate(4 * ONE_SECOND_IN_MS)
-        Linking.openURL(u)
-      }
+      
       useEffect(()=>{	
 		if(isFocus){
 			getData()
@@ -69,8 +71,8 @@ const Row = ({ item }) => {
     return (
         <View style={styles.row}>
             <View style={styles.col1}>
-            <Text onPress={()=>urlOpener(item.URL2)}  style={{ fontSize: 18,}}>{item.Problem }</Text>
-            <Text onPress={()=>urlOpener(item.URL)} style={{ fontSize: 14,color:"#00308F"}}>solution</Text>
+            <Text onPress={()=>_handlePressButtonAsync(item.URL2)}  style={{ fontSize: 18,}}>{item.Problem }</Text>
+            <Text onPress={()=>_handlePressButtonAsync(item.URL)}  style={{ fontSize: 14,color:"#00308F"}}>Solution</Text>
           
             </View>
                 <Pressable onPress={ToggleFunction}  >

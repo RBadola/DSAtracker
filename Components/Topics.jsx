@@ -6,20 +6,10 @@ import { DataStructure } from './Context'
 import { useEffect, useState, useRef } from 'react';
 import { useIsFocused } from '@react-navigation/native';
 
-
 const Topics = ({ route, navigation }) => {
 
     const isFocus = useIsFocused()
     const { DATALOVE } = useContext(DataStructure)
-
-
-    useEffect(() => {
-        if (isFocus) {
-           
-        }
-    }, []);
-
-
     return (
         <View>
             <ScrollView>
